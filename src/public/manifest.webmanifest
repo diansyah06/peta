@@ -1,0 +1,23 @@
+{
+  "name": "Peta Kota Indonesia",
+  "short_name": "PetaKota",
+  "start_url": "/#/login",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#69bdea",
+  "icons": [
+    {
+      "src": "/images/map.png", 
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Tambah Laporan",
+      "url": "/#/add-report",
+      "icons": [{"src": "/images/map.png","sizes":"512x512"}] 
+    }
+  ]
+}

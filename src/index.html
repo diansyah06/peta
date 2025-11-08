@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="favicon.png">
+    
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#69bdea" />
+   <link rel="icon" sizes="512x512" href="/images/map.png">
+
+
+    <title>App</title>
+
+    <!-- Leaflet -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    >
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+  </head>
+
+  <body>
+    <header>
+      <div class="main-header container">
+        <a class="brand-name" href="#/"><h1>Peta Kota di Indonesia</h1></a>
+
+        <nav id="navigation-drawer" class="navigation-drawer">
+          <ul id="nav-list" class="nav-list">
+            <li><a href="#/"><img id="logo" alt="logo" class="logo"></a></li>
+            <li><a href="#/favorites">Favorit</a></li>
+            <li>
+              <button
+                id="logout-button"
+                style="display: none; padding: 6px 10px; border: none; background-color: lightskyblue; color: red; border-radius: 4px; cursor: pointer;"
+              >
+                Logout
+              </button>
+            </li>
+          </ul>
+        </nav>
+
+        <button id="drawer-button" class="drawer-button">☰</button>
+      </div>
+    </header>
+
+    <main id="main-content" tabindex="-1">
+      <div id="content-wrapper"></div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-content">
+        <p>&copy; 2025 <strong>Peta Kota Indonesia</strong> — Dibuat oleh <em>Kasih Br Sinaga</em> 🌏</p>
+        <p>
+          Data peta menggunakan 
+          <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener noreferrer">
+            OpenStreetMap
+          </a>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

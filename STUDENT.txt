@@ -1,0 +1,9 @@
+Name: Kasih Br Sinaga
+Project: Peta Kota Indonesia
+Description: Web PWA untuk menampilkan dan menambah laporan lokasi (Leaflet map), dengan dukungan offline, push notification, dan indexedDB sync.
+Deployed URL: <ISI DENGAN URL DEPLOYMENT MU>
+Notes:
+- Service Worker: /sw.js
+- Manifest: /manifest.webmanifest
+- Icons: /icons/icon-192x192.png, /icons/icon-512x512.png
+- VAPID public key: stored in src/scripts/config.js
