@@ -3,14 +3,13 @@ import { openDB } from 'idb';
 // === Konstanta Database ===
 const DATABASE_NAME = 'citycare-db';
 const DATABASE_VERSION = 1;
-const FAVORITES_STORE = 'favorites'; // Ganti nama store
+const FAVORITES_STORE = 'favorites';
 const OUTBOX_STORE = 'outbox';
 
 // === Inisialisasi Database ===
 const dbPromise = openDB(DATABASE_NAME, DATABASE_VERSION, {
   upgrade(db) {
     if (!db.objectStoreNames.contains(FAVORITES_STORE)) {
-      // Buat store untuk favorit
       const favoritesStore = db.createObjectStore(FAVORITES_STORE, { keyPath: 'id' });
       favoritesStore.createIndex('id', 'id', { unique: true });
     }
@@ -48,21 +47,17 @@ export const deleteFavorite = async (id) => {
   return id;
 };
 
-// ... (SEMUA FUNGSI OUTBOX DI BAWAH INI TETAP SAMA, JANGAN DIHAPUS) ...
 // === Fungsi: Outbox (untuk laporan offline) ===
 export const addToOutbox = async (report) => {
   // ... (kode outbox tetap sama)
 };
 
 export const getOutbox = async () => {
-  // ... (kode outbox tetap sama)
 };
 
 export const clearOutboxItem = async (id) => {
-  // ... (kode outbox tetap sama)
 };
 
 // === Sinkronisasi Offline -> Online ===
 export const syncOfflineReports = async () => {
-  // ... (kode outbox tetap sama)
 };

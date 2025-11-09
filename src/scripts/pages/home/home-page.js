@@ -17,7 +17,9 @@ export default class HomePage {
         <h2 style="margin-top:20px">Daftar Laporan</h2>
         
         <div class="search-container" style="margin-bottom: 15px;">
-          <input type="search" id="searchBar" placeholder="Cari laporan berdasarkan nama atau deskripsi..." 
+        <label>Cari Laporan</label>
+          <input type="search" id="searchBar" alt="cari"
+          placeholder="Cari laporan berdasarkan nama atau deskripsi..." 
                  style="width: 100%; padding: 10px 14px; border: 1px solid #ccc; border-radius: 8px; font-size: 15px;">
         </div>
         <div id="reportList"></div>
@@ -127,8 +129,8 @@ export default class HomePage {
     reportList.innerHTML = stories
       .slice(0, 20)
       .map((s) => {
-        const isLiked = favoriteStoryIds.has(s.id); // Cek apakah story di-like
-        const likeButtonColor = isLiked ? '#dc3545' : '#aaaaaa'; // Merah jika di-like, abu-abu jika tidak
+        const isLiked = favoriteStoryIds.has(s.id); 
+        const likeButtonColor = isLiked ? '#dc3545' : '#aaaaaa'; 
 
         return `
           <div class="report-card" style="view-transition-name: card-${s.id};">
@@ -172,7 +174,6 @@ export default class HomePage {
       })
       .join('');
 
-    // 💡 Tambahkan style grid agar daftar rapi
     const style = document.createElement('style');
     style.textContent = `
     #reportList {
@@ -206,7 +207,6 @@ export default class HomePage {
   `;
     document.head.appendChild(style);
 
-    // 🗺️ Tambahkan marker acak di peta (sementara)
     stories.slice(0, 10).forEach((story) => {
       const lat = -6.2 + Math.random();
       const lng = 106.8 + Math.random();
@@ -242,7 +242,7 @@ export default class HomePage {
       if (!likeButton) return;
 
       const id = likeButton.dataset.id;
-      const isCurrentlyLiked = likeButton.style.color.includes('rgb(220, 53, 69)'); // Cek warna merah
+      const isCurrentlyLiked = likeButton.style.color.includes('rgb(220, 53, 69)'); 
 
       // Tampilkan loading
       likeButton.disabled = true;
@@ -253,10 +253,10 @@ export default class HomePage {
 
         // Update UI tombol
         if (newLikedStatus) {
-          likeButton.style.color = '#dc3545'; // Merah
+          likeButton.style.color = '#dc3545'; 
           likeButton.setAttribute('aria-label', 'Unlike this story');
         } else {
-          likeButton.style.color = '#aaaaaa'; // Abu-abu
+          likeButton.style.color = '#aaaaaa';
           likeButton.setAttribute('aria-label', 'Like this story');
         }
       } catch (error) {
@@ -279,7 +279,7 @@ export default class HomePage {
           <div class="
           " style="border: 1px solid #ddd; margin: 10px; padding: 10px;">
             <h3>${r.title}</h3>
-            <img src="${r.image}" width="200" />
+            <img src="${r.image}" width="200" alt="${r.title}"/>
             <p>${r.description}</p>
             <button class="detail-btn" data-id="${r.id}">Selengkapnya</button>
           </div>

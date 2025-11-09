@@ -7,7 +7,7 @@ export default class AddReportPage {
   async render() {
     return `
       <section class="container">
-        <h1>Tambah Laporan</h1>
+        <h4>Tambah Laporan</h4>
         <form id="reportForm" style="display:flex; flex-direction:column; gap:10px;">
          
           <div class="form-control">

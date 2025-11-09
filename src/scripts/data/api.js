@@ -24,7 +24,7 @@ export async function getStories() {
   const response = await fetch(ENDPOINTS.STORIES, {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${token}`, // ✅ token dipakai di header
+      Authorization: `Bearer ${token}`, 
     },
   });
  
@@ -81,7 +81,7 @@ export async function getStoryById(id) {
  
   const response = await fetch(`${BASE_API_URL}/stories/${id}`, {
     headers: {
-      Authorization: `Bearer ${token}`, // ✅ penting!
+      Authorization: `Bearer ${token}`, 
     },
   });
  

@@ -75,7 +75,7 @@ export default class RegisterPage {
 
   registerSuccessfully(message) {
     alert(message || 'Pendaftaran berhasil! Silakan masuk.');
-    window.location.hash = '/login';
+    window.location.hash = '#/login';
   }
 
   registerFailed(message) {

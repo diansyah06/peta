@@ -33,7 +33,7 @@ class App {
   }
 
   async renderPage() {
-    const url = getActiveRoute(); // contoh hasil: '/reports/123'
+    const url = getActiveRoute(); 
     let page = routes[url];
 
     // Jika rute tidak cocok secara langsung, cek apakah itu rute dinamis

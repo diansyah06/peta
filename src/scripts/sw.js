@@ -47,7 +47,7 @@ self.addEventListener('fetch', (event) => {
         } catch (error) {
           // 2. Jika jaringan gagal (offline), baru sajikan 'app shell' dari cache
           console.log('Network request failed, serving app shell from cache.');
-          return await caches.match('/index.html');
+          return await caches.match('index.html');
         }
       })()
     );

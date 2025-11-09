@@ -1,7 +1,7 @@
 Name: Kasih Br Sinaga
 Project: Peta Kota Indonesia
 Description: Web PWA untuk menampilkan dan menambah laporan lokasi (Leaflet map), dengan dukungan offline, push notification, dan indexedDB sync.
-Deployed URL: <ISI DENGAN URL DEPLOYMENT MU>
+Deployed URL: <https://Kasihsinaga.github.io/submission-kedua-appcity>
 Notes:
 - Service Worker: /sw.js
 - Manifest: /manifest.webmanifest

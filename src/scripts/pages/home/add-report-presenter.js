@@ -12,7 +12,7 @@ export default class AddReportPresenter {
   }
 
   initMap() {
-    this.#map = L.map('map').setView([3.5952, 98.6722], 13); // Default: Medan
+    this.#map = L.map('map').setView([3.5952, 98.6722], 13); 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors',
     }).addTo(this.#map);
@@ -110,23 +110,23 @@ export default class AddReportPresenter {
   }
 
   #showLocalNotification(title, description) {
-    // 1. Dapatkan token pengguna saat ini
+    // Dapatkan token pengguna saat ini
     const token = getAccessToken();
-    if (!token) return; // Jika tidak login, jangan tampilkan
+    if (!token) return; 
 
-    // 2. Cek status 'subscribe' dari localStorage (yang diatur home-presenter)
+    // Cek status 'subscribe' dari localStorage (yang diatur home-presenter)
     const subscribedUsers = JSON.parse(localStorage.getItem('subscribedUsers')) || [];
     const isSubscribed = subscribedUsers.includes(token);
 
-    // 3. Tampilkan notifikasi HANYA jika user subscribe DAN izin notifikasi diizinkan
+    // Tampilkan notifikasi HANYA jika user subscribe DAN izin notifikasi diizinkan
     if (isSubscribed && Notification.permission === 'granted') {
       try {
         const options = {
           body: description,
-          icon: '/images/map.png', // <-- Ganti ke path yang valid
+          icon: '/images/map.png',
           tag: 'laporan-sukses',
         };
-        new Notification(title, options); // 'new Notification' adalah Notifikasi Lokal
+        new Notification(title, options); 
       } catch (e) {
         console.warn('Gagal menampilkan Notifikasi Lokal:', e);
       }
@@ -201,7 +201,7 @@ export default class AddReportPresenter {
           text: 'Laporanmu sudah terkirim ke server.',
           confirmButtonText: 'OK',
         });
-        window.location.hash = '/home';
+        window.location.hash = '#/home';
       } else {
         Swal.fire({
           icon: 'error',

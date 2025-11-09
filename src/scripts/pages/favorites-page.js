@@ -32,7 +32,7 @@ export default class FavoritesPage {
       favoriteListContainer.innerHTML = '<p>Gagal memuat laporan favorit.</p>';
     }
 
-    // Tambahkan event listener untuk tombol "unlike" di halaman ini
+    // Tambahkan event listener untuk tombol "unlike" 
     favoriteListContainer.addEventListener('click', async (event) => {
       const unlikeButton = event.target.closest('.btn-unlike');
       if (unlikeButton) {
