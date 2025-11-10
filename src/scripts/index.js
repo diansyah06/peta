@@ -19,15 +19,14 @@ const handleNavigation = async () => {
   const token = getAccessToken();
   let path = window.location.hash;
 
-  // Normalisasi path jika kosong
+  
   if (path === '') path = '#/';
 
   
   const protectedRoutes = ['#/home', '#/favorites', '#/add-report', '#/reports/:id'];
   const authRoutes = ['#/login', '#/register'];
   const rootPath = '#/';
-
-  // Tentukan rute yang dituju (menghandle rute dinamis seperti /reports/:id)
+  
   const targetRoute = path.startsWith('#/reports/') ? '#/reports/:id' : path;
 
   if (token) {
@@ -58,7 +57,7 @@ const handleNavigation = async () => {
     await new Promise((r) => setTimeout(r, 400));
   }
 
-  await app.renderPage(); // 'renderPage' akan merender hash yang valid
+  await app.renderPage(); 
 
   if (mainContent) {
     mainContent.classList.remove('fade-out');

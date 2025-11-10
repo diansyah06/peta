@@ -109,32 +109,6 @@ export default class AddReportPresenter {
     return this.#capturedImageBlob;
   }
 
-  #showLocalNotification(title, description) {
-    // Dapatkan token pengguna saat ini
-    const token = getAccessToken();
-    if (!token) return; 
-
-    // Cek status 'subscribe' dari localStorage (yang diatur home-presenter)
-    const subscribedUsers = JSON.parse(localStorage.getItem('subscribedUsers')) || [];
-    const isSubscribed = subscribedUsers.includes(token);
-
-    // Tampilkan notifikasi HANYA jika user subscribe DAN izin notifikasi diizinkan
-    if (isSubscribed && Notification.permission === 'granted') {
-      try {
-        const options = {
-          body: description,
-          icon: '/images/map.png',
-          tag: 'laporan-sukses',
-        };
-        new Notification(title, options); 
-      } catch (e) {
-        console.warn('Gagal menampilkan Notifikasi Lokal:', e);
-      }
-    } else if (isSubscribed) {
-      console.log('User subscribed, tapi izin notifikasi (Notification.permission) belum "granted".');
-    }
-  }
-
   async handleSubmitReport(data) {
     if (!data.title || !data.severity || !data.imageInput) {
       Swal.fire({
@@ -191,10 +165,6 @@ export default class AddReportPresenter {
       loadingOverlay.remove();
 
       if (!response.error) {
-        this.#showLocalNotification(
-          `Laporan Baru: ${data.title}`,
-          description
-        );
         await Swal.fire({
           icon: 'success',
           title: 'Laporan Berhasil!',

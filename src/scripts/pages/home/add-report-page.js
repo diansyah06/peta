@@ -7,7 +7,7 @@ export default class AddReportPage {
   async render() {
     return `
       <section class="container">
-        <h4>Tambah Laporan</h4>
+        <h2>Tambah Laporan</h2>
         <form id="reportForm" style="display:flex; flex-direction:column; gap:10px;">
          
           <div class="form-control">
@@ -50,7 +50,8 @@ export default class AddReportPage {
               <button type="button" id="capturePhotoBtn" disabled>📸 Ambil Foto</button>
               <button type="button" id="closeCameraBtn" style="display:none;">❌ Tutup Kamera</button>
             </div>
- 
+
+            <label for="img">Image</label>
             <input type="file" id="imageInput" accept="image/*" style="margin-top:10px;" />
           </div>
  

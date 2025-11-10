@@ -14,10 +14,10 @@ export default class HomePage {
 
         <div id="map" class="map" style="height: 500px; margin-top: 10px;"></div>
 
-        <h2 style="margin-top:20px">Daftar Laporan</h2>
+        <h3 style="margin-top:20px">Daftar Laporan</h3>
         
         <div class="search-container" style="margin-bottom: 15px;">
-        <label>Cari Laporan</label>
+        <label for="cari">Cari Laporan</label>
           <input type="search" id="searchBar" alt="cari"
           placeholder="Cari laporan berdasarkan nama atau deskripsi..." 
                  style="width: 100%; padding: 10px 14px; border: 1px solid #ccc; border-radius: 8px; font-size: 15px;">
@@ -135,7 +135,7 @@ export default class HomePage {
         return `
           <div class="report-card" style="view-transition-name: card-${s.id};">
             <div class="report-card-content">
-              <h3>${s.name}</h3>
+              <h4>${s.name}</h4>
               <p><b>ID:</b> ${s.id}</p>
               <img src="${s.photoUrl}" alt="${s.name}" />
               <p class="story-date">Tanggal: ${this.#presenter.formatDate(s.createdAt)}</p>
