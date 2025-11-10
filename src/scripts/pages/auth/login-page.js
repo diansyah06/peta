@@ -9,7 +9,7 @@ export default class LoginPage {
     return `
       <section class="container" style="max-width:400px; margin-top: 50px;">
         <article class="login-form-container">
-          <h1 class="login__title" style="text-align:center; margin-bottom: 20px;">Masuk Akun</h1>
+          <h2 class="login__title" style="text-align:center; margin-bottom: 20px;">Masuk Akun</h2>
 
           <form id="login-form" class="login-form" style="display:flex; flex-direction:column; gap:10px;">
             <div class="form-control">
