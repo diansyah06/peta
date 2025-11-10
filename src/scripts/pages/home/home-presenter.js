@@ -23,11 +23,10 @@ export default class HomePresenter {
   async init() {
     const token = this.#authModel.getAccessToken();
     if (!token) {
-
-
+      return;
     }
-
     this.#view.showLogoutButton(true);
+    document.getElementById('favorites-link').style.display = 'block';
     this.#addSubscribeButton(); // Tombol toggle notifikasi
 
     this.#map = this.#view.renderMap();
@@ -129,11 +128,14 @@ export default class HomePresenter {
     if (reportsLS.length) {
       this.#view.renderLocalReports(map, reportsLS);
     }
-
   }
-
   handleLogout() {
     this.#authModel.removeAccessToken();
+    document.getElementById('favorites-link').style.display = 'none';
+    const subscribeButton = document.getElementById('subscribe-button');
+    if (subscribeButton) {
+      subscribeButton.style.display = 'none';
+    }
     setTimeout(() => {
       window.location.hash = '#/login';
     }, 0);
@@ -281,10 +283,10 @@ export default class HomePresenter {
 
         if (document.startViewTransition) {
           document.startViewTransition(() => {
-            window.location.href = `#/reports/${id}`; 
+            window.location.href = `#/reports/${id}`;
           });
         } else {
-          window.location.href = `#/reports/${id}`; 
+          window.location.href = `#/reports/${id}`;
         }
       }
     });

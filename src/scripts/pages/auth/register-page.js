@@ -36,6 +36,12 @@ export default class RegisterPage {
   }
 
   async afterRender() {
+    document.getElementById('favorites-link').style.display = 'none';
+    document.getElementById('logout-button').style.display = 'none';
+    const subscribeButton = document.getElementById('subscribe-button');
+    if (subscribeButton) {
+      subscribeButton.style.display = 'none';
+    }
     this.#presenter = new RegisterPresenter({
       view: this,
       model: CityCareAPI,

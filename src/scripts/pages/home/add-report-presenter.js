@@ -6,16 +6,26 @@ export default class AddReportPresenter {
   #map;
   #capturedImageBlob = null;
   #view = {};
-
+  #marker = null;
   constructor({ model }) {
     this.#model = model;
   }
 
   initMap() {
-    this.#map = L.map('map').setView([3.5952, 98.6722], 13); 
+    const defaultCoords = [3.5952, 98.6722];
+    this.#map = L.map('map').setView(defaultCoords, 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors',
     }).addTo(this.#map);
+
+    this.#marker = L.marker(defaultCoords, {
+      draggable: true,
+    }).addTo(this.#map);
+
+    this.#map.on('click', (e) => {
+      this.#marker.setLatLng(e.latlng);
+      this.#marker.setPopupContent(`Lokasi Dipilih: ${e.latlng.lat.toFixed(4)}, ${e.latlng.lng.toFixed(4)}`).openPopup();
+    });
   }
 
   async handleSearchLocation(query) {
@@ -26,8 +36,10 @@ export default class AddReportPresenter {
 
     if (results.length > 0) {
       const { lat, lon } = results[0];
-      this.#map.setView([lat, lon], 14);
-      L.marker([lat, lon]).addTo(this.#map).bindPopup(query).openPopup();
+      const newLatLng = [lat, lon];
+      this.#map.setView(newLatLng, 14);
+      this.#marker.setLatLng(newLatLng);
+      this.#marker.setPopupContent(query).openPopup();
     } else {
       Swal.fire({
         icon: 'warning',
@@ -37,12 +49,10 @@ export default class AddReportPresenter {
     }
   }
 
-  // ==== KAMERA ====
   initCamera({ videoElement, photoPreview, openBtn, captureBtn, closeBtn }) {
     this.#view = { videoElement, photoPreview, openBtn, captureBtn, closeBtn };
     let stream = null;
 
-    // Buka kamera
     openBtn.addEventListener('click', async () => {
       try {
         stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
@@ -60,7 +70,6 @@ export default class AddReportPresenter {
       }
     });
 
-    // Ambil foto dari stream
     captureBtn.addEventListener('click', () => {
       const canvas = document.createElement('canvas');
       canvas.width = videoElement.videoWidth;
@@ -84,7 +93,6 @@ export default class AddReportPresenter {
       }, 'image/jpeg');
     });
 
-    // Tutup kamera
     closeBtn.addEventListener('click', () => {
       if (stream) {
         stream.getTracks().forEach(track => track.stop());
@@ -109,6 +117,26 @@ export default class AddReportPresenter {
     return this.#capturedImageBlob;
   }
 
+  #showLocalNotification(title, description) {
+    const token = getAccessToken();
+    if (!token) return; 
+    const subscribedUsers = JSON.parse(localStorage.getItem('subscribedUsers')) || [];
+    const isSubscribed = subscribedUsers.includes(token);
+    if (isSubscribed && Notification.permission === 'granted') {
+      try {
+        const options = {
+          body: description,
+          icon: 'images/map.png',
+          tag: 'laporan-sukses',
+        };
+        new Notification(title, options); 
+      } catch (e) {
+        console.warn('Gagal menampilkan Notifikasi Lokal:', e);
+      }
+    } else if (isSubscribed) {
+      console.log('User subscribed, tapi izin notifikasi (Notification.permission) belum "granted".');
+    }
+  }
   async handleSubmitReport(data) {
     if (!data.title || !data.severity || !data.imageInput) {
       Swal.fire({
@@ -118,12 +146,9 @@ export default class AddReportPresenter {
       });
       return;
     }
-
-    const latlng = this.#map.getCenter();
+    const latlng = this.#marker.getLatLng();
     const description = data.description || 'Tidak ada deskripsi';
     const postDescription = `[${data.title.toUpperCase()} - ${data.severity.toUpperCase()}] ${description}`;
-
-    // Spinner loading overlay
     const loadingOverlay = document.createElement('div');
     loadingOverlay.style.position = 'fixed';
     loadingOverlay.style.top = 0;
@@ -165,6 +190,10 @@ export default class AddReportPresenter {
       loadingOverlay.remove();
 
       if (!response.error) {
+        this.#showLocalNotification(
+          `Laporan Baru: ${data.title}`,
+          description
+        );
         await Swal.fire({
           icon: 'success',
           title: 'Laporan Berhasil!',

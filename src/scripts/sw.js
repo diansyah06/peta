@@ -1,6 +1,10 @@
-const CACHE_NAME = 'citycare-cache-v1';
+const CACHE_NAME = 'citycare-cache-v2';
 const PRECACHE_URLS = [
-
+  'index.html',
+  'app.bundle.js',
+  'app.css',
+  'manifest.webmanifest',
+  'images/map.png'
 ];
 
 self.addEventListener('install', (event) => {

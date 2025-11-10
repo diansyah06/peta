@@ -35,8 +35,12 @@ export default class LoginPage {
   }
 
   async afterRender() {
-    
-    // Inisialisasi presenter (hanya jika tidak ada token)
+    document.getElementById('favorites-link').style.display = 'none';
+    document.getElementById('logout-button').style.display = 'none';
+    const subscribeButton = document.getElementById('subscribe-button');
+    if (subscribeButton) {
+      subscribeButton.style.display = 'none';
+    }
     this.#presenter = new LoginPresenter({
       view: this,
       model: CityCareAPI,

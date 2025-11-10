@@ -15,7 +15,7 @@ export default class ReportDetailPresenter {
       },
       renderDetail(report) {
         this.container.innerHTML = `
-          <h3>${report.name}</h3>
+          <h2>${report.name}</h2>
           <img src="${report.photoUrl}" alt="${report.name}" style="max-width:300px;border-radius:8px;margin-bottom:10px;" />
           <p><b>Tanggal:</b> ${new Date(report.createdAt).toLocaleString('id-ID')}</p>
           <p><b>Deskripsi:</b> ${report.description || 'Tidak ada deskripsi'}</p>
