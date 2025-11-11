@@ -1,7 +1,7 @@
 import { getAccessToken } from "../utils/auth";
 import CONFIG from '../config';
 
-const BASE_API_URL = 'https://story-api.dicoding.dev/v1';
+const BASE_API_URL = '/v1';
 
 const ENDPOINTS = {
   STORIES: `${BASE_API_URL}/stories`,
@@ -9,9 +9,6 @@ const ENDPOINTS = {
   LOGIN: `${BASE_API_URL}/login`,
 };
 
-/**
- * Ambil semua story
- */
 export async function getStories() {
   const token = getAccessToken();
   if (!token) {
@@ -132,14 +129,21 @@ export async function subscribeToPushAPI(subscription) {
     return { error: true, message: 'Token tidak ditemukan' };
   }
 
+  // 1. Ubah subscription object ke format JSON standar
+  const subscriptionData = subscription.toJSON();
+
+  // 2. HAPUS key 'expirationTime' yang tidak diizinkan oleh server
+  delete subscriptionData.expirationTime;
+
   try {
-    const response = await fetch(`${BASE_API_URL}/subscribe`, {
+    const response = await fetch(`${BASE_API_URL}/notifications/subscribe`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(subscription),
+      // 3. Kirim data yang sudah bersih
+      body: JSON.stringify(subscriptionData),
     });
 
     return response.json();
@@ -158,13 +162,16 @@ export async function unsubscribeFromPushAPI(subscription) {
   }
 
   try {
-    const response = await fetch(`${BASE_API_URL}/unsubscribe`, {
-      method: 'POST',
+    // PERBAIKAN: Endpoint diubah ke /notifications/subscribe
+    const response = await fetch(`${BASE_API_URL}/notifications/subscribe`, {
+      // PERBAIKAN: Metode diubah ke DELETE
+      method: 'DELETE', 
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(subscription),
+      // PERBAIKAN: Body disesuaikan dengan dokumentasi (hanya endpoint)
+      body: JSON.stringify({ endpoint: subscription.endpoint }),
     });
 
     return response.json();

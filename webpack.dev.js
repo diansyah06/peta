@@ -24,6 +24,12 @@ module.exports = merge(common, {
         warnings: true,
       },
     },
+    devMiddleware: {
+      writeToDisk: (filePath) => {
+        // Hanya tulis sw.bundle.js ke disk, file lain tetap di memori
+        return /sw\.bundle\.js$/.test(filePath);
+      },
+    },
     proxy: [
       {
         context: ['/v1'],
