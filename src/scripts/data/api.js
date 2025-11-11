@@ -1,7 +1,7 @@
 import { getAccessToken } from "../utils/auth";
 import CONFIG from '../config';
 
-const BASE_API_URL = '/v1';
+const BASE_API_URL = 'https://story-api.dicoding.dev/v1';
 
 const ENDPOINTS = {
   STORIES: `${BASE_API_URL}/stories`,
