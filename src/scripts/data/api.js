@@ -1,14 +1,14 @@
 import { getAccessToken } from "../utils/auth";
 import CONFIG from '../config';
- 
-const BASE_API_URL = 'https://story-api.dicoding.dev/v1'; 
- 
+
+const BASE_API_URL = 'https://story-api.dicoding.dev/v1';
+
 const ENDPOINTS = {
   STORIES: `${BASE_API_URL}/stories`,
   REGISTER: `${BASE_API_URL}/register`,
   LOGIN: `${BASE_API_URL}/login`,
 };
- 
+
 /**
  * Ambil semua story
  */
@@ -20,14 +20,14 @@ export async function getStories() {
       message: "Token tidak ditemukan. Harap login terlebih dahulu.",
     };
   }
- 
+
   const response = await fetch(ENDPOINTS.STORIES, {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${token}`, 
+      Authorization: `Bearer ${token}`,
     },
   });
- 
+
   const data = await response.json();
   if (response.status === 401) {
     return {
@@ -37,7 +37,7 @@ export async function getStories() {
   }
   return data;
 }
- 
+
 /**
  * Unggah story baru
  */
@@ -49,7 +49,7 @@ export async function postStory({ description, photo, lat, lon }) {
       message: "Token tidak ditemukan. Harap login terlebih dahulu.",
     };
   }
- 
+
   const formData = new FormData();
   formData.append("description", description);
   formData.append("photo", photo);
@@ -57,7 +57,7 @@ export async function postStory({ description, photo, lat, lon }) {
     formData.append("lat", lat);
     formData.append("lon", lon);
   }
- 
+
   const response = await fetch(`${BASE_API_URL}/stories`, {
     method: "POST",
     headers: {
@@ -65,11 +65,11 @@ export async function postStory({ description, photo, lat, lon }) {
     },
     body: formData,
   });
- 
+
   const data = await response.json();
   return data;
 }
- 
+
 /**
  * Ambil detail story by ID
  */
@@ -78,18 +78,18 @@ export async function getStoryById(id) {
   if (!token) {
     throw new Error("Token tidak ditemukan. Harap login terlebih dahulu.");
   }
- 
+
   const response = await fetch(`${BASE_API_URL}/stories/${id}`, {
     headers: {
-      Authorization: `Bearer ${token}`, 
+      Authorization: `Bearer ${token}`,
     },
   });
- 
+
   const data = await response.json();
   if (!response.ok) throw new Error(data.message || "Gagal mengambil data.");
   return data.story;
 }
- 
+
 /**
  * Register dan Login
  */
@@ -101,16 +101,16 @@ export async function getRegistered({ name, email, password }) {
   });
   return await response.json();
 }
- 
+
 export async function getLogin({ email, password }) {
   const response = await fetch(ENDPOINTS.LOGIN, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password }),
   });
- 
+
   const responseJson = await response.json();
- 
+
   if (!responseJson.error) {
     return {
       ok: true,
@@ -118,10 +118,57 @@ export async function getLogin({ email, password }) {
       data: { accessToken: responseJson.loginResult.token },
     };
   }
- 
+
   return {
     ok: false,
     message: responseJson.message,
     data: null,
   };
+}
+
+export async function subscribeToPushAPI(subscription) {
+  const token = getAccessToken();
+  if (!token) {
+    return { error: true, message: 'Token tidak ditemukan' };
+  }
+
+  try {
+    const response = await fetch(`${BASE_API_URL}/subscribe`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(subscription),
+    });
+
+    return response.json();
+  } catch (err) {
+    return { error: true, message: err.message };
+  }
+}
+
+/**
+ * [BARU] Hapus data subscription dari API Story
+ */
+export async function unsubscribeFromPushAPI(subscription) {
+  const token = getAccessToken();
+  if (!token) {
+    return { error: true, message: 'Token tidak ditemukan' };
+  }
+
+  try {
+    const response = await fetch(`${BASE_API_URL}/unsubscribe`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(subscription),
+    });
+
+    return response.json();
+  } catch (err) {
+    return { error: true, message: err.message };
+  }
 }

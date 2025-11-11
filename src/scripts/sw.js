@@ -25,11 +25,15 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') {
+    console.log('SW: Mengabaikan request non-GET (POST/PUT/DELETE).');
+    return;
+  }
   const { request } = event;
   const url = new URL(request.url);
 
 
-  if ((url.pathname.includes('/v1') || url.pathname.includes('/stories')) && request.method === 'GET') {
+  if (url.pathname.includes('/v1') || url.pathname.includes('/stories')) {
     event.respondWith(
       fetch(request).catch(() => {
         return new Response(

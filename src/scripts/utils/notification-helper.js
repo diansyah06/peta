@@ -1,5 +1,6 @@
 import Swal from 'sweetalert2';
 import { VAPID_PUBLIC_KEY } from '../config';
+import * as CityCareAPI from '../data/api';
 
 function urlBase64ToUint8Array(base64String) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
@@ -60,20 +61,34 @@ export async function subscribeForPush() {
     });
     return null;
   }
-
+ 
   const registration = await navigator.serviceWorker.ready;
-  const existing = await registration.pushManager.getSubscription();
-  if (existing) {
-    return existing;
-  }
-
+ 
+  // Pindahkan semua logika ke dalam try/catch
   try {
-    const subscription = await registration.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
-    });
-
+    // 1. Cek dulu apakah sudah ada subscription
+    let subscription = await registration.pushManager.getSubscription();
+ 
+    if (!subscription) {
+      // 2. Jika tidak ada, buat baru
+      subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+      });
+    }
+ 
+    // 3. Selalu kirim subscription (baru atau lama) ke API
+    const response = await CityCareAPI.subscribeToPushAPI(subscription);
+    if (response.error) {
+      // Jika gagal kirim ke API, lempar error
+      throw new Error(`Gagal mendaftar ke server: ${response.message}`);
+    }
+    console.log('Berhasil subscribe ke API Story:', response);
+ 
+    // 4. Simpan ke localStorage
     localStorage.setItem('pushSubscription', JSON.stringify(subscription));
+ 
+    // 5. Selalu tampilkan pesan sukses
     await Swal.fire({
       icon: 'success',
       title: 'Berhasil Subscribe!',
@@ -81,7 +96,9 @@ export async function subscribeForPush() {
       timer: 1500,
       showConfirmButton: false,
     });
+    
     return subscription;
+
   } catch (err) {
     console.error('subscribe error', err);
     await Swal.fire({
@@ -105,6 +122,11 @@ export async function unsubscribeFromPush() {
     return;
   }
   try {
+    const response = await CityCareAPI.unsubscribeFromPushAPI(subscription);
+    if (response.error) {
+      throw new Error(`Gagal unsubscribe dari server: ${response.message}`);
+    }
+    console.log('Berhasil unsubscribe dari API Story:', response);
     await subscription.unsubscribe();
     localStorage.removeItem('pushSubscription');
     await Swal.fire({

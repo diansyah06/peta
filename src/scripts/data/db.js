@@ -1,7 +1,7 @@
 import { openDB } from 'idb';
 
 // === Konstanta Database ===
-const DATABASE_NAME = 'citycare-db';
+const DATABASE_NAME = 'storyApp-db';
 const DATABASE_VERSION = 1;
 const FAVORITES_STORE = 'favorites';
 const OUTBOX_STORE = 'outbox';

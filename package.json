@@ -8,7 +8,7 @@
     "serve": "http-server docs"
   },
   "keywords": [],
-  "author": "YOUR_NAME <yourmail@mail.com>",
+  "author": "Kasih br Sinaga <kasihsinaga130@gmail.com>",
   "license": "ISC",
   "devDependencies": {
     "@babel/preset-env": "^7.26.9",

@@ -1,5 +1,6 @@
 import Swal from 'sweetalert2';
 import { getAccessToken } from '../../utils/auth';
+import { addToOutbox } from '../../data/db';
 
 export default class AddReportPresenter {
   #model;
@@ -119,7 +120,7 @@ export default class AddReportPresenter {
 
   #showLocalNotification(title, description) {
     const token = getAccessToken();
-    if (!token) return; 
+    if (!token) return;
     const subscribedUsers = JSON.parse(localStorage.getItem('subscribedUsers')) || [];
     const isSubscribed = subscribedUsers.includes(token);
     if (isSubscribed && Notification.permission === 'granted') {
@@ -129,7 +130,7 @@ export default class AddReportPresenter {
           icon: 'images/map.png',
           tag: 'laporan-sukses',
         };
-        new Notification(title, options); 
+        new Notification(title, options);
       } catch (e) {
         console.warn('Gagal menampilkan Notifikasi Lokal:', e);
       }
@@ -211,10 +212,30 @@ export default class AddReportPresenter {
     } catch (err) {
       console.error(err);
       loadingOverlay.remove();
+
       Swal.fire({
-        icon: 'error',
-        title: 'Kesalahan!',
-        text: 'Terjadi kesalahan saat mengirim laporan.',
+        title: 'Anda Sedang Offline',
+        text: 'Laporan Anda disimpan dan akan dikirim otomatis saat koneksi kembali pulih.',
+        icon: 'info',
+        confirmButtonText: 'OK',
+      }).then(async () => {
+        const token = getAccessToken();
+        await addToOutbox({
+          id: new Date().getTime(),
+          description: postDescription,
+          photoBlob: data.imageInput,
+          photoName: data.imageInput.name || 'photo.jpg',
+          lat: latlng.lat,
+          lon: latlng.lng,
+          token: token,
+        });
+
+        if ('serviceWorker' in navigator && 'SyncManager' in window) {
+          navigator.serviceWorker.ready.then((registration) => {
+            registration.sync.register('sync-new-stories');
+          });
+        }
+        window.location.hash = '#/home';
       });
     }
   }
